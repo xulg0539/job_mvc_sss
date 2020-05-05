@@ -1,0 +1,34 @@
+作业一：
+
+手写MVC框架基础上增加如下功能
+
+1）定义注解@Security（有value属性，接收String数组），该注解用于添加在Controller类或者Handler方法上，表明哪些用户拥有访问该Handler方法的权限（注解配置用户名）
+
+2）访问Handler时，用户名直接以参数名username紧跟在请求的url后面即可，比如http://localhost:8080/demo/handle01?username=zhangsan
+
+3）程序要进行验证，有访问权限则放行，没有访问权限在页面上输出
+
+注意：自己造几个用户以及url，上交作业时，文档提供哪个用户有哪个url的访问权限
+
+
+思路：
+1：针对注解Security的作用分为是类或者方法
+2：控制点
+在原有自定义mvc的基础上再原有匹配查询出handler的逻辑不变的情况下，新增一个判断单元，针对匹配出的handler(controller,method)
+是否有注解security，结合当前url参数共同判断是否合法访问
+  /**
+         * 原有匹配handler逻辑不变，在此基础上针对controller,method增加权限过滤
+         */
+        if(!privilegeCheck(handler,req))
+        {
+            resp.getWriter().write("sorry,you have no privilege to access!");
+            return;
+        }
+
+ 3：判断逻辑是综合判断，controller或method必须都校验通过，否则阻止访问
+
+ 4：url--以下都可以访问，其他都不能访问
+ http://localhost:8080/demo/querySpecial?username=zhangsan
+ http://localhost:8080/demo/querySpecial?username=lisi
+ http://localhost:8080/demo/querySpecial?username=wangwu
+ http://localhost:8080/demo/querySpecial?username=xuliu

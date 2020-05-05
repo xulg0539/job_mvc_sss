@@ -1,0 +1,24 @@
+作业二：
+
+需求：实现登录页面（简易版即可），实现登录验证功能、登录之后跳转到列表页，查询出 tb_resume 表【表数据和课上保持一致】的所有数据（列表不要求分页，在列表右上方有“新增”按钮，每一行后面有“编辑”和“删除”按钮，并实现功能），如果未登录就访问url则跳转到登录页面，用户名和密码固定为admin/admin
+
+技术要求：根据SSM整合的思路，进行SSS整合（Spring+SpringMVC+SpringDataJPA）,登录验证使用SpringMVC拦截器实现
+
+【提交时统一数据库名test，用户名和密码root】
+
+思路：
+1：页面访问控制---用拦截器实现，同时注意过滤登录等特殊页面
+1.1:自定义拦截器--PrivilegeIntercepter
+1.2：主要逻辑：判断session中是否有合法登录用户，有就正常访问，没有就内部跳转到登录页面
+
+2：在原有ssm的基础上去掉mybatis部分，把spring data jpa作为mybatis的dao层替换，实现数据的增删改查
+
+3：ps:此处出现了一个让人头疼的问题hibernate的包引入进来后jsp页面不能正常访问，内置tomcat报错，起来以后后台没问题，
+前台页面不能正常访问，后通过本地tomcat关联启动项目解决。
+启动报错：
+严重: Unable to process Jar entry [module-info.class] from Jar [jar:file:/F:/maven_repository/javax/xml/bind/jaxb-api/2.3.1/jaxb-api-2.3.1.jar!/] for annotations
+页面访问报错：
+javax.servlet.ServletException: java.lang.LinkageError: loader constraint violation: when resolving interface method 'javax.el.ExpressionFactory javax.servlet.jsp.JspApplicationContext.getExpressionFactory()' the class loader org.apache.jasper.servlet.JasperLoader @df34d92 of the current class, org/apache/jsp/index_jsp, and the class loader org.codehaus.plexus.classworlds.realm.ClassRealm @7979b8b7 for the method's defining class, javax/servlet/jsp/JspApplicationContext, have different Class objects for the type javax/el/ExpressionFactory used in the signature (org.apache.jsp.index_jsp is in unnamed module of loader org.apache.jasper.servlet.JasperLoader @df34d92, parent loader org.apache.catalina.loader.WebappClassLoader @11695651; javax.servlet.jsp.JspApplicationContext is in unnamed module of loader org.codehaus.plexus.classworlds.realm.ClassRealm @7979b8b7, parent loader 'bootstrap')
+ org.apache.jasper.servlet.JspServlet.service(JspServlet.java:343)
+ javax.servlet.http.HttpServlet.service(HttpServlet.java:728)
+ org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:51)
